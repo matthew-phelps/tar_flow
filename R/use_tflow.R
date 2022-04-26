@@ -9,6 +9,8 @@ use_tflow <- function(){
   usethis::use_directory("R")
   usethis::use_template("packages.R", package = "tflow")
   usethis::use_template("_targets.R", package = "tflow")
+  usethis::use_template("run_tar_make.R", package = "tflow")
+  usethis::use_template("call_run.R", package = "tflow")
   usethis::use_template(".env", package = "tflow")
 }
 
