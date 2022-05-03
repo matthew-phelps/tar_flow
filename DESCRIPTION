@@ -1,11 +1,9 @@
-Package: tflow
-Title: Setup a project in the tflow style for using the targets package
-Version: 0.3.6.9000
-Authors@R: c(
-   person("Miles", "McBain", email = "miles.mcbain@gmail.com", role = c("aut", "cre")),
-   person("Shir", "Dekel", email = "shirdekel@yahoo.com.au", role = "ctb"),
-   person("Noam", "Ross", email = "NA@example.com", role = "aut", comment = c(ORCID='0000-0002-2136-0000')))
-Description: Has a function that sets up an R workflow in the dflow style, using targets.
+Package: tarflow
+Title: A fork of Miles McBain's tflow package, with some minor modifications
+Version: 0.0.0.1
+Author: Matthew Phelps
+Maintainer: Matthew Phelps <matthew.david.phelps@gmail.com>
+Description: Has a function that sets up an R workflow using targets.
 Depends: R (>= 3.5.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -21,16 +19,11 @@ Imports:
     atcursor (>= 0.0.1),
     fs,
     yaml
-Suggests: 
-    conflicted,
-    capsule,
-    dotenv,
+Suggests:
     targets,
     tarchetypes,
     withr,
     here
 Remotes: 
-    milesmcbain/fnmate,
-    milesmcbain/capsule,
     milesmcbain/atcursor
 RoxygenNote: 7.1.2

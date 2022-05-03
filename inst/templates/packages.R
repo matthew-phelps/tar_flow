@@ -2,3 +2,5 @@
 library(targets)
 library(tarchetypes)
 library(magrittr)
+library(data.table)
+library(purrr)

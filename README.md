@@ -1,30 +1,33 @@
-# tflow
+# tarflow
 
 An opinionated lightweight template for smooth `targets` flows.
 
-A sibling of [dflow](https://github.com/milesmcbain/dflow)
+This is a shameless fork of Miles McBain's excellent work on [tflow](https://github.com/milesmcbain/tflow). There are some minor changes to make it more suitible for my workflow, but 99.9% is the same
 
 ## Installation
 
 ```r
-remotes::install_github("milesmcbain/tflow")
+remotes::install_github("matthew-phelps/tarflow")
 ```
 
 Set `dependencies = TRUE` to also install [capsule](https://github.com/MilesMcBain/capsule), [conflicted](https://github.com/r-lib/conflicted), [dontenv](https://github.com/gaborcsardi/dotenv), [targets](https://docs.ropensci.org/drake), and [tarchetypes](https://github.com/ropensci/tarchetypes).
 
 ## Usage
 
-`tflow::use_tflow()`:
+`tarflow::use_tarflow()`:
 
 ```
  ./
  |_ R/
+ |_ input/
+ |_ output/
  |_ _targets.R
  |_ packages.R
+ |_ call_tar_make.R
  |_ .env
 ```
 
-`tflow::use_rmd("analysis")`:
+`tarflow::use_rmd("analysis")`:
 
 ```
 √ Creating 'doc/'
@@ -36,16 +39,16 @@ tar_render(report, "doc/analysis..Rmd")
 √ library(rmarkdown) added to ./packages.R
 ```
 
-`tflow::use_gitignore()`:
+`tarflow::use_gitignore()`:
 
-Drop in a starter `./.gitignore` with ignores for `drake` and `renv` among others.
+Drop in a starter `./.gitignore` with ignores for `targets` and `renv` among others.
 
 
 ## About
 
-`tflow` is a port of `dflow` from `drake` to `targets`. `targets` can be used many ways, and it turns out it can be used in an almost identical workflow to `dflow`. 
+`tarflow` is a shameless fork  of `tflow`.
 
-`tflow` tries to set up a minimalist ergonomic workflow for `targets` pipeline
+`tarflow` tries to set up a minimalist ergonomic workflow for `targets` pipeline
 development. To get the most out of it follow these tips:
 
 1. Put all your target code in separate functions in `R/`. Use `fnmate` to
@@ -59,7 +62,7 @@ development. To get the most out of it follow these tips:
    in one place when you go to add sandboxing with `renv`, `packarat`, and
    `switchr` etc.
 
-4. Take advantage of automation for loading `targets` targets at the cursor with the 'load target at cursor' addin. Or the `tflow` addin: 'load editor targets' to load all targets referred to in the current editor.
+4. Take advantage of automation for loading `targets` targets at the cursor with the 'load target at cursor' addin. Or the `tarflow` addin: 'load editor targets' to load all targets referred to in the current editor.
 
 ## Opinions
 

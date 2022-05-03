@@ -1,19 +1,19 @@
-##' Setup a tflow project
+##' Setup a tarflow project
 ##'
-##' Creates files and directories according to the tflow template.
+##' Creates files and directories according to the tarflow template.
 ##'
-##' @title use_tflow
+##' @title use_tarflow
 ##' @return Nothing. Modifies your workspace.
 ##' @export
-use_tflow <- function(){
+use_tarflow <- function(){
   usethis::use_directory("R")
   usethis::use_directory("output")
   usethis::use_directory("input")
-  usethis::use_template("packages.R", package = "tflow")
-  usethis::use_template("_targets.R", package = "tflow")
-  usethis::use_template("run_tar_make.R", package = "tflow")
-  usethis::use_template("call_run.R", package = "tflow")
-  usethis::use_template(".env", package = "tflow")
+  usethis::use_template("packages.R", package = "tarflow")
+  usethis::use_template("_targets.R", package = "tarflow")
+  usethis::use_template("run_tar_make.R", package = "tarflow")
+  usethis::use_template("call_run.R", package = "tarflow")
+  usethis::use_template(".env", package = "tarflow")
 }
 
 ##' Generate a target for an R markdown file
@@ -21,10 +21,10 @@ use_tflow <- function(){
 ##' @title rmd_target
 ##' @param target_name of a target to generate rmd target for.
 ##' @return target text to the console.
-##' @author Miles McBain
+##' @author Matthew Phelps
 rmd_target <- function(target_name) {
 
-  report_dir <- getOption('tflow.report_dir') %||% "doc"
+  report_dir <- getOption('tarflow.report_dir') %||% "doc"
 
   glue::glue("Add this target to your tar_plan():\n",
              "\n",
@@ -35,18 +35,17 @@ rmd_target <- function(target_name) {
 ##' Create an RMarkdown file and generate target definition code.
 ##'
 ##' The generated document defaults to the "./doc" folder. This can be overridden
-##' with option 'tflow.report_dir'.
+##' with option 'tarflow.report_dir'.
 ##'
 ##' @title use_rmd
 ##' @param target_name a name for target and the generated R markdown document.
 ##' @return the path of the file created. (invisibly)
 ##' @export
-##' @author Miles McBain
 use_rmd <- function(target_name) {
 
   target_file <- paste0(target_name, ".Rmd")
 
-  report_dir <- getOption('tflow.report_dir') %||% "doc"
+  report_dir <- getOption('tarflow.report_dir') %||% "doc"
   file_path <- file.path(report_dir, target_file)
 
   if (file.exists(file_path)) {
@@ -59,7 +58,7 @@ use_rmd <- function(target_name) {
 
   usethis::use_template("blank.Rmd",
                         save_as = file_path,
-                        package = "tflow")
+                        package = "tarflow")
 
   message(rmd_target(target_name))
 
@@ -91,7 +90,7 @@ use_gitignore <- function() {
   }
 
     usethis::use_template(template = "_gitignore",
-                          package = "tflow",
+                          package = "tarflow",
                           save_as = ".gitignore")
 
 }
