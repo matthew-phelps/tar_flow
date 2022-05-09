@@ -1,5 +1,11 @@
+Name: Assigns selected function args
+Description: Assigns the selectec function arguments to the global environment
+Binding: assign_selected_args
+Interactive: false
+
+
 Name: Load editor targets
-Description: tar_load() targets referred to in current editor from cache 
+Description: tar_load() targets referred to in current editor from cache
 Binding: rs_load_current_editor_targets
 Interactive: false
 

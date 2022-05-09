@@ -1,9 +1,58 @@
+#' .. content for \description{} (Reads in text that is selected) ..
+#'
+#' .. content for \details{} (Reads in text that is selected)..
+#'
+#' @title Read selected text
+
+read_selected_text <- function() {
+
+  context <- rstudioapi::getActiveDocumentContext()
+  selected_text <- rstudioapi::primary_selection(context)$text
+  if (length(selected_text) > 0) {
+    cat(selected_text)
+    return(selected_text)
+  }
+  warning("No text was selected")
+
+}
+
+
+assign_selected_args <- function(selected_text) {
+  selected_text <- read_selected_text()
+  load_env <- parent.frame()
+
+  fun_args <-
+    gsub("\\n", "", x = selected_text)
+  fun_args <- strsplit(fun_args,
+
+                       split = ")",
+                       fixed = T)
+  fun_args <- stringr::str_trim(fun_args[[1]])
+  fun_args <- strsplit(fun_args, split = ",")
+
+  lapply(fun_args[[1]], function(arg_i) {
+    arg_i_list <- stringr::str_trim(unlist(strsplit(arg_i, "=", fixed = T)))
+    rhs <- as.numeric(arg_i_list[2])
+    assign_meta(!!arg_i_list[1], !!rhs, envir = load_env)
+  })
+
+}
+
+
+assign_meta <- function(lhs, rhs, envir = parent.frame()) {
+  arg_call <- rlang::call2("<-", rlang::enexpr(lhs), rlang::enexpr(rhs))
+  eval(arg_call, envir = envir)
+}
+
+
+
+
+
+
 get_current_editor_symbols <- function() {
   document_content <-
-    paste0(
-      rstudioapi::getActiveDocumentContext()$contents,
-      collapse = "\n"
-    )
+    paste0(rstudioapi::getActiveDocumentContext()$contents,
+           collapse = "\n")
   document_tokens <-
     sourcetools::tokenize_string(document_content)
   document_tokens[document_tokens$type == "symbol", "value"]
@@ -18,10 +67,11 @@ rs_load_current_editor_targets <- function() {
   project_targets <- targets::tar_meta(targets_only = TRUE)$name
   local_targets <- intersect(local_symbols, project_targets)
   load_targets <-
-    lapply(
-      local_targets,
-      function(x) bquote(targets::tar_load(.(as.symbol(x)), envir = load_env))
-    )
+    lapply(local_targets,
+           function(x)
+             bquote(targets::tar_load(.(as.symbol(
+               x
+             )), envir = load_env)))
   loaded_targets <-
     lapply(load_targets, function(x) {
       eval(x)
@@ -39,7 +89,8 @@ tflow_load_all <- function() {
   } else {
     message("No `packages.R` found")
   }
-  if (dir.exists("R") && length(list.files("R", pattern = "\\.[Rr]$"))) {
+  if (dir.exists("R") &&
+      length(list.files("R", pattern = "\\.[Rr]$"))) {
     lapply(list.files("R", pattern = "\\.[Rr]$", full.names = TRUE), function(f) {
       tryCatch(
         source(f, verbose = FALSE),
@@ -60,7 +111,10 @@ tflow_load_all <- function() {
 #' @export
 rs_make_target_at_cursor <- function(shortcut = FALSE) {
   word_or_selection <- atcursor::get_word_or_selection()
-  command <- bquote(targets::tar_make(.(as.symbol(word_or_selection)), shortcut = shortcut))
+  command <-
+    bquote(targets::tar_make(.(as.symbol(
+      word_or_selection
+    )), shortcut = shortcut))
   cat_command(command)
   eval(command)
 }
@@ -68,7 +122,6 @@ rs_make_target_at_cursor <- function(shortcut = FALSE) {
 #' @noRd
 #' @export
 rs_tar_make_current_plan <- function() {
-
   if (!file.exists("_targets.yaml")) {
     cat_command(quote(targets::tar_make()))
     targets::tar_make()
@@ -76,21 +129,30 @@ rs_tar_make_current_plan <- function() {
   }
 
   yaml_file <- parse_targets_yaml()
-  current_file <- fs::path_file(rstudioapi::getActiveDocumentContext()$path)
+  current_file <-
+    fs::path_file(rstudioapi::getActiveDocumentContext()$path)
 
   yaml_entry <-
     yaml_file[yaml_file$script == current_file, ]
 
-  if (nrow(yaml_entry) == 0) stop("{tflow} could't find an entry for current active source file in _targets.yaml")
-  if (nrow(yaml_entry) > 1) stop("{tflow} found more than one entry in _targets.yaml matching the current active source file")
+  if (nrow(yaml_entry) == 0)
+    stop("{tflow} could't find an entry for current active source file in _targets.yaml")
+  if (nrow(yaml_entry) > 1)
+    stop(
+      "{tflow} found more than one entry in _targets.yaml matching the current active source file"
+    )
 
-  make_command <- bquote(targets::tar_make(script = .(yaml_entry$script), store = .(yaml_entry$store)))
+  make_command <-
+    bquote(targets::tar_make(
+      script = .(yaml_entry$script),
+      store = .(yaml_entry$store)
+    ))
   cat_command(make_command)
   eval(make_command)
 }
 
 #' @export
-#' @noRd 
+#' @noRd
 rs_load_target_at_cursor_from_any_plan <- function() {
   if (!file.exists("_targets.yaml")) {
     return(targets::rstudio_addin_tar_load())
@@ -103,23 +165,30 @@ rs_load_target_at_cursor_from_any_plan <- function() {
     current_meta <- tryCatch(
       targets::tar_meta(store = yaml_entry$store),
       # there may be no meta for this plan
-      error = function(e) NULL
+      error = function(e)
+        NULL
     )
     # if there was no meta continue search
-    if (is.null(current_meta)) next
+    if (is.null(current_meta))
+      next
 
     if (any(current_meta$name == selected_target)) {
       found_store_entry <- TRUE
-      load_command <- bquote(targets::tar_load(.(as.symbol(selected_target)), store = .(yaml_entry$store)))
+      load_command <-
+        bquote(targets::tar_load(.(as.symbol(
+          selected_target
+        )), store = .(yaml_entry$store)))
       cat_command(load_command)
       return(eval(load_command, envir = eval_env))
     }
   }
   # if we got here we didn't find any matching targets in any stores
-  stop("{tflow} couldn't find ", selected_target, " in any of the stores in _targets.yaml")
+  stop("{tflow} couldn't find ",
+       selected_target,
+       " in any of the stores in _targets.yaml")
 }
 
-#' 
+#'
 #' @export
 rs_make_target_at_cursor_shortcut <- function() {
   rs_make_target_at_cursor(shortcut = TRUE)
@@ -128,8 +197,10 @@ rs_make_target_at_cursor_shortcut <- function() {
 parse_targets_yaml <- function() {
   project_yaml <- yaml::read_yaml("./_targets.yaml")
   do.call(rbind,
-    lapply(project_yaml, function(x) data.frame(script = x$script, store = x$store)))
+          lapply(project_yaml, function(x)
+            data.frame(script = x$script, store = x$store)))
 }
 
-cat_command <- function(command) cat(format(command), "\n", sep = "")
-
+cat_command <-
+  function(command)
+    cat(format(command), "\n", sep = "")
