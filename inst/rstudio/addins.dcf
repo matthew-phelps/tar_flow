@@ -1,6 +1,6 @@
-Name: Assigns selected function args
-Description: Assigns the selectec function arguments to the global environment
-Binding: assign_selected_args
+Name: Run tar_make() as background job
+Description: Runs tar_make() in a background job, allowing you to continue using your R session uninterrupted
+Binding: run_tar_make_background_job
 Interactive: false
 
 
