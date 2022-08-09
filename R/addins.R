@@ -15,71 +15,6 @@ read_selected_text <- function() {
 
 }
 
-
-assign_selected_args <- function(selected_text) {
-  selected_text <- read_selected_text()
-  load_env <- parent.frame()
-
-  fun_args <-
-    gsub("\\n", "", x = selected_text)
-
-  fun_args <- gsub(" = ", "=", fun_args)
-  # tokens <-
-  #   sourcetools::tokenize_string(fun_args)
-  # current_symbols <- tokens[tokens$type == "symbol", "value"]
-
-  fun_args<-strsplit(fun_args, split = ",", fixed = TRUE)
-
-# for(i in seq_along(current_symbols)){
-#   browser()
-#   reg_index <- regexpr(paste0("^", current_symbols[i], "="), fun_args)
-#   lhs_match <- regmatches(fun_args, reg_index)
-#
-# }
-  lapply(fun_args[[1]], function(arg_i) {
-    arg_i_list <-
-      stringr::str_trim(unlist(strsplit(arg_i, "=", fixed = T)))
-    rhs <- arg_i_list[[2]]
-    arg_type <- get_arg_type(rhs)
-    rhs <- switch(
-      arg_type,
-      "string" = gsub(pattern = "\\\"", replacement = "", rhs),
-      "numeric" = as.numeric(rhs),
-      "integer" = as.integer(gsub(
-        pattern = "L", replacement = "", rhs
-      )),
-      "symbol" = rhs
-    )
-    if (arg_type == "symbol") {
-      assign(arg_i_list[1], get(rhs), envir = load_env)
-    }
-    else{
-      assign(arg_i_list[1], rhs, envir = load_env)
-    }
-
-
-
-  })
-
-}
-
-
-get_arg_type <- function(rhs) {
-  if (grepl("\\\"", rhs))
-    return("string")
-  is_num <- !suppressWarnings(is.na(as.numeric(rhs)))
-  if (is_num)
-    return("numeric")
-  is_int <- grepl("^[[:digit:]]+L", rhs)
-  if (is_int)
-    return("int")
-  return("symbol")
-}
-
-
-
-
-
 get_current_editor_symbols <- function() {
   document_content <-
     paste0(rstudioapi::getActiveDocumentContext()$contents,
@@ -235,3 +170,15 @@ parse_targets_yaml <- function() {
 cat_command <-
   function(command)
     cat(format(command), "\n", sep = "")
+
+
+#' Run tar_make() as background job in RStudio
+#'
+#' @return Nothing, run for its side effects
+#' @export
+#'
+run_tar_make_background_job <- function() {
+  make_script <- tempfile()
+  write("targets::tar_make()", file = make_script)
+  rstudioapi::jobRunScript(make_script, name = "tar_make", importEnv = FALSE)
+}
