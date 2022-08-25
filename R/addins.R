@@ -178,7 +178,11 @@ cat_command <-
 #' @export
 #'
 run_tar_make_background_job <- function() {
-  make_script <- tempfile()
-  write("targets::tar_make()", file = make_script)
-  rstudioapi::jobRunScript(make_script, name = "tar_make", importEnv = FALSE)
+  # Temp R script in same dir as _targets.R file
+  make_script_file <-
+    normalizePath(tempfile(tmpdir = rstudioapi::getActiveProject()), mustWork = F)
+  write("targets::tar_make()", file = make_script_file)
+    rstudioapi::jobRunScript(make_script_file, name = "tar_make", importEnv = FALSE)
+    Sys.sleep(0.5)
+  on.exit(unlink(make_script_file))
 }

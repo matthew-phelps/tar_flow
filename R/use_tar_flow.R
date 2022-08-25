@@ -11,8 +11,6 @@ use_tarflow <- function(){
   usethis::use_directory("input")
   usethis::use_template("packages.R", package = "tarflow")
   usethis::use_template("_targets.R", package = "tarflow")
-  usethis::use_template("run_tar_make.R", package = "tarflow")
-  usethis::use_template("call_run.R", package = "tarflow")
   usethis::use_template(".env", package = "tarflow")
 }
 
