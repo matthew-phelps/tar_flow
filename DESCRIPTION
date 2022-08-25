@@ -25,6 +25,6 @@ Suggests:
     withr,
     here
 Remotes: 
-    milesmcbain/atcursor
+    milesmcbain/atcursor,
     milesmcbain/fnmate
 RoxygenNote: 7.2.1
