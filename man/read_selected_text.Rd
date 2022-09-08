@@ -7,8 +7,5 @@
 read_selected_text()
 }
 \description{
-.. content for \description{} (Reads in text that is selected) ..
-}
-\details{
-.. content for \details{} (Reads in text that is selected)..
+Read selected text
 }

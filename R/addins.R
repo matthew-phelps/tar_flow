@@ -1,7 +1,3 @@
-#' .. content for \description{} (Reads in text that is selected) ..
-#'
-#' .. content for \details{} (Reads in text that is selected)..
-#'
 #' @title Read selected text
 
 read_selected_text <- function() {
@@ -69,6 +65,7 @@ tarflow_load_all <- function() {
   } else {
     message("No R source files found in R/ directory")
   }
+  message("Done :)")
   invisible()
 }
 
