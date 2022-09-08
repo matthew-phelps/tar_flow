@@ -48,7 +48,7 @@ rs_load_current_editor_targets <- function() {
 
 #' @export
 #' @noRd
-tflow_load_all <- function() {
+tarflow_load_all <- function() {
   message("\nLoading `packages.R` and `R/*.R`")
   if (file.exists("packages.R")) {
     suppressPackageStartupMessages(source("packages.R"))
@@ -177,7 +177,7 @@ cat_command <-
 #' @return Nothing, run for its side effects
 #' @export
 #'
-run_tar_make_background_job <- function() {
+rs_run_tar_make_background_job <- function() {
   # Temp R script in same dir as _targets.R file
   make_script_file <-
     normalizePath(tempfile(tmpdir = rstudioapi::getActiveProject()), mustWork = F)

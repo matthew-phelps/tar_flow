@@ -1,6 +1,6 @@
 Name: Run tar_make() as background job
 Description: Runs tar_make() in a background job, allowing you to continue using your R session uninterrupted
-Binding: run_tar_make_background_job
+Binding: rs_run_tar_make_background_job
 Interactive: false
 
 
@@ -11,7 +11,7 @@ Interactive: false
 
 Name: Source `packages.R` and `R/*.R`
 Description: Sources worflow files. Package startup messages are suppressed, failures of individual files reported.
-Binding: tflow_load_all
+Binding: tarflow_load_all
 Interactive: false
 
 Name: Make target at cursor
