@@ -1,6 +1,6 @@
 Package: tarflow
 Title: A fork of Miles McBain's tflow package, with some minor modifications
-Version: 0.0.211
+Version: 0.0.212
 Author: Matthew Phelps
 Maintainer: Matthew Phelps <matthew.david.phelps@gmail.com>
 Description: Has a function that sets up an R workflow using targets.
