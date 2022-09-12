@@ -44,7 +44,7 @@ rs_load_current_editor_targets <- function() {
 
 #' @export
 #' @noRd
-tarflow_load_all <- function() {
+tarflow_source_all <- function() {
   message("\nLoading `packages.R` and `R/*.R`")
   if (file.exists("packages.R")) {
     suppressPackageStartupMessages(source("packages.R"))
@@ -99,10 +99,10 @@ rs_tar_make_current_plan <- function() {
     yaml_file[yaml_file$script == current_file, ]
 
   if (nrow(yaml_entry) == 0)
-    stop("{tflow} could't find an entry for current active source file in _targets.yaml")
+    stop("{tarflow} could't find an entry for current active source file in _targets.yaml")
   if (nrow(yaml_entry) > 1)
     stop(
-      "{tflow} found more than one entry in _targets.yaml matching the current active source file"
+      "{tarflow} found more than one entry in _targets.yaml matching the current active source file"
     )
 
   make_command <-
@@ -146,7 +146,7 @@ rs_load_target_at_cursor_from_any_plan <- function() {
     }
   }
   # if we got here we didn't find any matching targets in any stores
-  stop("{tflow} couldn't find ",
+  stop("{tarflow} couldn't find ",
        selected_target,
        " in any of the stores in _targets.yaml")
 }
