@@ -1,3 +1,9 @@
+Name: Make test file from function
+Description: Runs usethis::use_test() and provides as input the text at the cursor.
+Binding: rs_make_test_at_cursor
+Interactive: false
+
+
 Name: Run tar_make() as background job
 Description: Runs tar_make() in a RStudio background job, allowing you to continue using your R session uninterrupted
 Binding: rs_run_tar_make_background_job

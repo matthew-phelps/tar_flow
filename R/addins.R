@@ -70,7 +70,6 @@ tarflow_source_all <- function() {
 }
 
 #' @noRd
-#'
 #' @export
 rs_make_target_at_cursor <- function(shortcut = FALSE) {
   word_or_selection <- atcursor::get_word_or_selection()
@@ -182,4 +181,15 @@ rs_run_tar_make_background_job <- function() {
     rstudioapi::jobRunScript(make_script_file, name = "tar_make", importEnv = FALSE)
     Sys.sleep(0.5)
   on.exit(unlink(make_script_file))
+}
+
+
+#' @noRd
+#' @export
+rs_make_test_at_cursor <- function(shortcut = FALSE) {
+  word_or_selection <- atcursor::get_word_or_selection()
+  command <-
+    usethis::use_test(word_or_selection)
+  cat_command(command)
+  eval(command)
 }
